@@ -55,13 +55,14 @@
 			pos_arr.length = 0;
 			for(var i = 0; i <= max_scroll_dist; ++i) {
 				var pos = move_scale * i - img_off;
-				pos_arr[i] = pos + 'px'; //trans_pre + pos + trans_suf;
+				pos = ((pos * 10000) | 0) * 0.0001;
+				pos_arr[i] = trans_pre + pos + trans_suf;
 			}
 		}
 		
 		self.parallax = function(scroll) {
 			scroll = clamp(scroll - scroll_off | 0, 0, max_scroll_dist);
-			style['top'] = pos_arr[scroll];
+			style[xform] = pos_arr[scroll];
 		}
 		
 		init();
@@ -78,7 +79,7 @@
 		});
 		
 		function init() {
-			if(!Transforms.loaded) {
+			if(!Transforms.loaded || !WindowUpdateHandler.loaded || !Draw.loaded) {
 				setTimeout(init, 100);
 				return;
 			}
@@ -111,7 +112,10 @@
 		}
 		
 		function pre_calc(e) {
+			var oheight = document.body.style.height;
+			document.body.style.height = 'auto';
 			body_rect = document.body.getBoundingClientRect();
+			document.body.style.height = oheight;
 			
 			var top = body_rect.top;
 			var scroll = WindowUpdateHandler.y;

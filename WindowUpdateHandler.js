@@ -41,6 +41,8 @@
 		var cur_handle = 0;
 		var handle_arr = [];
 		
+		self.loaded = false;
+		
 		var update_size;
 		if(undefined !== window.innerWidth) {
 			update_size = function() {
@@ -97,6 +99,8 @@
 			
 			update_size();
 			self.w = w; self.h = h;
+			
+			self.loaded = true;
 		}
 		
 		function init_events() {
